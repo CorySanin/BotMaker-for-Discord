@@ -67,6 +67,8 @@ namespace BotMaker
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (txtDir.Text.Length > 0 && txtDir.Text.ToCharArray()[txtDir.Text.Length - 1] != '\\')
+                txtDir.Text = txtDir.Text + '\\';
             AddUpdateAppSettings("audiodir", txtDir.Text);
             AddUpdateAppSettings("prefixchar", txtPrefix.Text);
             AddUpdateAppSettings("game", txtGame.Text);
