@@ -105,9 +105,10 @@ namespace BotMaker
                         {
                             String argument = e.GetArg("specify").ToLower();
                             XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
-                            if (argresults.Count == 1)
+                            if (argresults.Count >= 1)
                             {
-                                XmlNode argbasenode = argresults.Item(0);
+                                int b = rnd.Next(0, argresults.Count);
+                                XmlNode argbasenode = argresults.Item(b);
                                 XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
                                 fname = BASEDIR + argfname.Value + ".mp3";
                             }
