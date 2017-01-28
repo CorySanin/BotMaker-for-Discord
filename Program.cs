@@ -57,84 +57,90 @@ namespace BotMaker
                 _client.UsingAudio(x => // Opens an AudioConfigBuilder so we can configure our AudioService
                 {
                     x.Mode = AudioMode.Outgoing; // Tells the AudioService that we will only be sending audio
-            });
-
-                XmlDocument doc = new XmlDocument();
-                doc.Load("commands.xml");
-
-                XmlNodeList commands = doc.SelectNodes("/commands/command");
-
-                Random rnd = new Random();
-
-                for (int i = 0; i < commands.Count; i++)
+                });
+                try
                 {
-                    XmlNode cmd = commands.Item(i);
-                    XmlNodeList listofalias = cmd.SelectNodes("alias/trigger/text()");
-                    String[] aliass = new string[listofalias.Count];
-                    for (int j = 0; j < listofalias.Count; j++)
-                        aliass[j] = listofalias.Item(j).Value;
-                    XmlNodeList listofaudio = cmd.SelectNodes("audios/audio/text()");
-                    String[] audios = new string[listofaudio.Count];
-                    for (int j = 0; j < listofaudio.Count; j++)
-                        audios[j] = listofaudio.Item(j).Value;
-                    XmlNode arg = cmd.SelectSingleNode("args");
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load("commands.xml");
+
+                    XmlNodeList commands = doc.SelectNodes("/commands/command");
+
+                    Random rnd = new Random();
+
+                    for (int i = 0; i < commands.Count; i++)
+                    {
+                        XmlNode cmd = commands.Item(i);
+                        XmlNodeList listofalias = cmd.SelectNodes("alias/trigger/text()");
+                        String[] aliass = new string[listofalias.Count];
+                        for (int j = 0; j < listofalias.Count; j++)
+                            aliass[j] = listofalias.Item(j).Value;
+                        XmlNodeList listofaudio = cmd.SelectNodes("audios/audio/text()");
+                        String[] audios = new string[listofaudio.Count];
+                        for (int j = 0; j < listofaudio.Count; j++)
+                            audios[j] = listofaudio.Item(j).Value;
+                        XmlNode arg = cmd.SelectSingleNode("args");
 
 
-                    var cmdguy = _client.GetService<CommandService>().CreateCommand(cmd.SelectSingleNode("trigger/text()").Value);
-                    if(arg != null)
-                    {
-                        cmdguy.Parameter("argument", ParameterType.Optional);
-                    }
-                    cmdguy
-                    .Description(cmd.SelectSingleNode("description/text()").Value)
-                    .Alias(aliass)
-                    .Do(e =>
-                    {
-                    _client.SetGame(new Game(config.ReadSetting("game"))); // make sure the game stays up-to-date
-                    bool muststart = false;
-                        Queue q;
-                        if (!queue.TryGetValue(e.Server, out q))
-                        {
-                            q = new Queue();
-                            queue.Add(e.Server, q);
-                            muststart = true;
-                        }
-                        int a = rnd.Next(0, audios.Length);
-                        String fname = BASEDIR + audios[a] + ".mp3";
+                        var cmdguy = _client.GetService<CommandService>().CreateCommand(cmd.SelectSingleNode("trigger/text()").Value);
                         if (arg != null)
                         {
-                            String argument = e.GetArg("specify").ToLower();
-                            XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
-                            if (argresults.Count >= 1)
+                            cmdguy.Parameter("argument", ParameterType.Optional);
+                        }
+                        cmdguy
+                        .Description(cmd.SelectSingleNode("description/text()").Value)
+                        .Alias(aliass)
+                        .Do(e =>
+                        {
+                            _client.SetGame(new Game(config.ReadSetting("game"))); // make sure the game stays up-to-date
+                            bool muststart = false;
+                            Queue q;
+                            if (!queue.TryGetValue(e.Server, out q))
                             {
-                                int b = rnd.Next(0, argresults.Count);
-                                XmlNode argbasenode = argresults.Item(b);
-                                XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
-                                fname = BASEDIR + argfname.Value + ".mp3";
+                                q = new Queue();
+                                queue.Add(e.Server, q);
+                                muststart = true;
                             }
-                        }
-                        audioclip t = new audioclip(e.User.Id, e.User.VoiceChannel, fname, false);
-                        bool isgood = true;
-                        if (q.Count > 0)
-                        {
-                            Object[] currentQ = q.ToArray();
-                            for (int inc = 0; inc < currentQ.Length && isgood; inc++)
-                                isgood = !((audioclip)currentQ[inc]).isMatch(t.uid);
-                        }
-                        if (isgood)
-                        {
-                            q.Enqueue(t);
-                            if (muststart)
-                                handleQueue(e.Server);
-                        }
+                            int a = rnd.Next(0, audios.Length);
+                            String fname = BASEDIR + audios[a] + ".mp3";
+                            if (arg != null)
+                            {
+                                String argument = e.GetArg("specify").ToLower();
+                                XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
+                                if (argresults.Count >= 1)
+                                {
+                                    int b = rnd.Next(0, argresults.Count);
+                                    XmlNode argbasenode = argresults.Item(b);
+                                    XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
+                                    fname = BASEDIR + argfname.Value + ".mp3";
+                                }
+                            }
+                            audioclip t = new audioclip(e.User.Id, e.User.VoiceChannel, fname, false);
+                            bool isgood = true;
+                            if (q.Count > 0)
+                            {
+                                Object[] currentQ = q.ToArray();
+                                for (int inc = 0; inc < currentQ.Length && isgood; inc++)
+                                    isgood = !((audioclip)currentQ[inc]).isMatch(t.uid);
+                            }
+                            if (isgood)
+                            {
+                                q.Enqueue(t);
+                                if (muststart)
+                                    handleQueue(e.Server);
+                            }
+                        });
+                    }
+
+                    _client.ExecuteAndWait(async () =>
+                    {
+                        await _client.Connect(config.ReadSetting("bottoken"), TokenType.Bot);
+                        _client.SetGame(new Game(config.ReadSetting("game")));
                     });
                 }
-
-                _client.ExecuteAndWait(async () =>
+                catch
                 {
-                    await _client.Connect(config.ReadSetting("bottoken"), TokenType.Bot);
-                    _client.SetGame(new Game(config.ReadSetting("game")));
-                });
+                    Console.WriteLine("Something's not right. Make sure you have a proper commands.xml file in the same directory as BotMaker");
+                }
             }
         }
 
