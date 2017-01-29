@@ -41,7 +41,7 @@ namespace BotMaker
             else
             {
                 config.AddUpdateAppSettings("restarted", "0");
-                Console.Write("BotMaker by Cory Sanin (2017)\nConfig with -c argument.");
+                Console.Write("BotMaker by Cory Sanin (2017)\nConfig with -c argument.\n");
                 _client = new DiscordClient(input =>
                 {
                     input.LogLevel = LogSeverity.Info;
@@ -104,14 +104,17 @@ namespace BotMaker
                             String fname = BASEDIR + audios[a] + ".mp3";
                             if (arg != null)
                             {
-                                String argument = e.GetArg("specify").ToLower();
-                                XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
-                                if (argresults.Count >= 1)
+                                String argument = e.GetArg("argument").ToLower();
+                                if (!argument.Equals(""))
                                 {
-                                    int b = rnd.Next(0, argresults.Count);
-                                    XmlNode argbasenode = argresults.Item(b);
-                                    XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
-                                    fname = BASEDIR + argfname.Value + ".mp3";
+                                    XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
+                                    if (argresults.Count >= 1)
+                                    {
+                                        int b = rnd.Next(0, argresults.Count);
+                                        XmlNode argbasenode = argresults.Item(b);
+                                        XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
+                                        fname = BASEDIR + argfname.Value + ".mp3";
+                                    }
                                 }
                             }
                             audioclip t = new audioclip(e.User.Id, e.User.VoiceChannel, fname, false);
