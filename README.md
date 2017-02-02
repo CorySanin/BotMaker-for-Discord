@@ -40,4 +40,7 @@ This is what your commands.xml might look like:
 ```
 
 This is worst case scenario. Your commands.xml may look simpler.
-If you are ready to try it out, go to the [releases](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest) and grab the latest version
+If you are ready to try it out, go to the [releases](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest) and grab the latest version.
+
+## Having Issues?
+Just let me know here on [GitHub](https://github.com/CoryZ40/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
