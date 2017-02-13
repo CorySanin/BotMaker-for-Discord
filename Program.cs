@@ -92,44 +92,47 @@ namespace BotMaker
                         .Do(e =>
                         {
                             _client.SetGame(new Game(config.ReadSetting("game"))); // make sure the game stays up-to-date
-                            bool muststart = false;
-                            Queue q;
-                            if (!queue.TryGetValue(e.Server, out q))
+                            if (e.User.VoiceChannel != null)
                             {
-                                q = new Queue();
-                                queue.Add(e.Server, q);
-                                muststart = true;
-                            }
-                            int a = rnd.Next(0, audios.Length);
-                            String fname = BASEDIR + audios[a] + ".mp3";
-                            if (arg != null)
-                            {
-                                String argument = e.GetArg("argument").ToLower();
-                                if (!argument.Equals(""))
+                                bool muststart = false;
+                                Queue q;
+                                if (!queue.TryGetValue(e.Server, out q))
                                 {
-                                    XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
-                                    if (argresults.Count >= 1)
+                                    q = new Queue();
+                                    queue.Add(e.Server, q);
+                                    muststart = true;
+                                }
+                                int a = rnd.Next(0, audios.Length);
+                                String fname = BASEDIR + audios[a] + ".mp3";
+                                if (arg != null)
+                                {
+                                    String argument = e.GetArg("argument").ToLower();
+                                    if (!argument.Equals(""))
                                     {
-                                        int b = rnd.Next(0, argresults.Count);
-                                        XmlNode argbasenode = argresults.Item(b);
-                                        XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
-                                        fname = BASEDIR + argfname.Value + ".mp3";
+                                        XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
+                                        if (argresults.Count >= 1)
+                                        {
+                                            int b = rnd.Next(0, argresults.Count);
+                                            XmlNode argbasenode = argresults.Item(b);
+                                            XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
+                                            fname = BASEDIR + argfname.Value + ".mp3";
+                                        }
                                     }
                                 }
-                            }
-                            audioclip t = new audioclip(e.User.Id, e.User.VoiceChannel, fname, false);
-                            bool isgood = true;
-                            if (q.Count > 0)
-                            {
-                                Object[] currentQ = q.ToArray();
-                                for (int inc = 0; inc < currentQ.Length && isgood; inc++)
-                                    isgood = !((audioclip)currentQ[inc]).isMatch(t.uid);
-                            }
-                            if (isgood)
-                            {
-                                q.Enqueue(t);
-                                if (muststart)
-                                    handleQueue(e.Server);
+                                audioclip t = new audioclip(e.User.Id, e.User.VoiceChannel, fname, false);
+                                bool isgood = true;
+                                if (q.Count > 0)
+                                {
+                                    Object[] currentQ = q.ToArray();
+                                    for (int inc = 0; inc < currentQ.Length && isgood; inc++)
+                                        isgood = !((audioclip)currentQ[inc]).isMatch(t.uid);
+                                }
+                                if (isgood)
+                                {
+                                    q.Enqueue(t);
+                                    if (muststart)
+                                        handleQueue(e.Server);
+                                }
                             }
                         });
                     }
