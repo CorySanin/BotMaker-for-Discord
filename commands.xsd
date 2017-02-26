@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema xmlns="http://tauntbot.tk/commands" elementFormDefault="qualified" targetNamespace="http://tauntbot.tk/commands" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="commands">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="command" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="command">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="trigger" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="alias" />
+        <xs:element ref="description" />
+        <xs:element ref="audios" />
+        <xs:element minOccurs="0" maxOccurs="1" ref="args" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="trigger" type="xs:string" />
+  <xs:element name="alias">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="trigger" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="description" type="xs:string" />
+  <xs:element name="audios">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="audio" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="audio" type="xs:string" />
+  <xs:element name="args">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="arg" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="arg">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="match" />
+        <xs:element minOccurs="1" maxOccurs="unbounded" ref="audio" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="match" type="xs:string" />
+</xs:schema>
