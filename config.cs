@@ -75,5 +75,10 @@ namespace BotMaker
             AddUpdateAppSettings("bottoken", txtToken.Text);
             this.Close();
         }
+
+        private void btnFolderBrws_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+        }
     }
 }

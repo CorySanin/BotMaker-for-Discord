@@ -38,6 +38,8 @@
             this.txtToken = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnFolderBrws = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -55,7 +57,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDir.Location = new System.Drawing.Point(13, 26);
             this.txtDir.Name = "txtDir";
-            this.txtDir.Size = new System.Drawing.Size(259, 20);
+            this.txtDir.Size = new System.Drawing.Size(258, 20);
             this.txtDir.TabIndex = 1;
             // 
             // label2
@@ -124,12 +126,24 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // btnFolderBrws
+            // 
+            this.btnFolderBrws.Location = new System.Drawing.Point(245, 24);
+            this.btnFolderBrws.Name = "btnFolderBrws";
+            this.btnFolderBrws.Size = new System.Drawing.Size(27, 23);
+            this.btnFolderBrws.TabIndex = 9;
+            this.btnFolderBrws.Text = "...";
+            this.btnFolderBrws.UseVisualStyleBackColor = true;
+            this.btnFolderBrws.Visible = false;
+            this.btnFolderBrws.Click += new System.EventHandler(this.btnFolderBrws_Click);
+            // 
             // config
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 203);
+            this.Controls.Add(this.btnFolderBrws);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtToken);
             this.Controls.Add(this.label4);
@@ -161,5 +175,7 @@
         private System.Windows.Forms.TextBox txtToken;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnFolderBrws;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
