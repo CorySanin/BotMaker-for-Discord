@@ -14,6 +14,8 @@ namespace BotMaker
 {
     class Program
     {
+        const String VERSIONNO = "1.1.0";
+
         private readonly string BASEDIR = config.ReadSetting("audiodir");
         static Dictionary<Discord.Server, bool> currentServerInfo = new Dictionary<Discord.Server, bool>();
         static Dictionary<Discord.Server, ulong> currentuid = new Dictionary<Discord.Server, ulong>();
@@ -41,7 +43,7 @@ namespace BotMaker
             else
             {
                 config.AddUpdateAppSettings("restarted", "0");
-                Console.Write("BotMaker by Cory Sanin (2017)\nConfig with -c argument.\n");
+                Console.Write("BotMaker by Cory Sanin (2017)\nVersion " + VERSIONNO + "\nConfig with -c argument.\n");
                 _client = new DiscordClient(input =>
                 {
                     input.LogLevel = LogSeverity.Info;
