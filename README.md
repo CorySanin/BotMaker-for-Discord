@@ -40,6 +40,9 @@ This is what your commands.xml might look like:
 ```
 
 This is worst case scenario. Your commands.xml may look simpler.
+
+Once you have your commands.xml, you can start BotMaker. When you run it for the first time, it will prompt you for some information related to your bot account. If you haven't made an account for your bot yet, do so [here](https://discordapp.com/developers/applications/me). You will have to make a bot user in order to use BotMaker. The last step is to invite the bot to your server. Go to `https://discordapp.com/oauth2/authorize?client_id=CLIENTID&scope=bot&permissions=0`, where `CLIENTID` is your bot application's client ID (NOT THE TOKEN).
+
 If you are ready to try it out, go to the [releases](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest) and grab the latest version.
 
 ## Having Issues?
