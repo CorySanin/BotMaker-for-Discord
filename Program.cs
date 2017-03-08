@@ -112,10 +112,10 @@ namespace BotMaker
                                         XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
                                         if (argresults.Count >= 1)
                                         {
-                                            int b = rnd.Next(0, argresults.Count);
-                                            XmlNode argbasenode = argresults.Item(b);
-                                            XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
-                                            fname = BASEDIR + argfname.Value + ".mp3";
+                                            XmlNode argbasenode = argresults.Item(0);
+                                            XmlNodeList argfname = argbasenode.SelectNodes("audio/text()");
+                                            int b = rnd.Next(0, argfname.Count);
+                                            fname = BASEDIR + argfname.Item(b).Value + ".mp3";
                                         }
                                     }
                                 }
