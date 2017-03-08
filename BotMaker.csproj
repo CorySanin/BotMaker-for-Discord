@@ -128,9 +128,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="commands.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

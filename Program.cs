@@ -9,7 +9,6 @@ using System.Collections;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Windows.Forms;
-using System.Xml.Schema;
 
 namespace BotMaker
 {
@@ -61,45 +60,34 @@ namespace BotMaker
                 });
                 try
                 {
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    settings.Schemas.Add("http://tauntbot.tk/commands", "commands.xsd");
-                    settings.ValidationType = ValidationType.Schema;
-                    XmlReader reader = XmlReader.Create("commands.xml", settings);
-
                     XmlDocument doc = new XmlDocument();
-                    //doc.Load("commands.xml");
-                    doc.Load(reader);
+                    doc.Load("commands.xml");
 
-                    ValidationEventHandler eventHandler = new ValidationEventHandler(validateDoc);
-
-                    doc.Validate(eventHandler);
-                    XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
-                    nsmgr.AddNamespace("bm", "http://tauntbot.tk/commands");
-                    XmlNodeList commands = doc.SelectNodes("//bm:command", nsmgr);
+                    XmlNodeList commands = doc.SelectNodes("/commands/command");
 
                     Random rnd = new Random();
 
                     for (int i = 0; i < commands.Count; i++)
                     {
                         XmlNode cmd = commands.Item(i);
-                        XmlNodeList listofalias = cmd.SelectNodes("bm:alias//bm:trigger/text()", nsmgr);
+                        XmlNodeList listofalias = cmd.SelectNodes("alias/trigger/text()");
                         String[] aliass = new string[listofalias.Count];
                         for (int j = 0; j < listofalias.Count; j++)
                             aliass[j] = listofalias.Item(j).Value;
-                        XmlNodeList listofaudio = cmd.SelectNodes("bm:audios//bm:audio/text()", nsmgr);
+                        XmlNodeList listofaudio = cmd.SelectNodes("audios/audio/text()");
                         String[] audios = new string[listofaudio.Count];
                         for (int j = 0; j < listofaudio.Count; j++)
                             audios[j] = listofaudio.Item(j).Value;
-                        XmlNode arg = cmd.SelectSingleNode("bm:args", nsmgr);
+                        XmlNode arg = cmd.SelectSingleNode("args");
 
 
-                        var cmdguy = _client.GetService<CommandService>().CreateCommand(cmd.SelectSingleNode("bm:trigger/text()", nsmgr).Value);
+                        var cmdguy = _client.GetService<CommandService>().CreateCommand(cmd.SelectSingleNode("trigger/text()").Value);
                         if (arg != null)
                         {
                             cmdguy.Parameter("argument", ParameterType.Optional);
                         }
                         cmdguy
-                        .Description(cmd.SelectSingleNode("bm:description/text()", nsmgr).Value)
+                        .Description(cmd.SelectSingleNode("description/text()").Value)
                         .Alias(aliass)
                         .Do(e =>
                         {
@@ -121,12 +109,12 @@ namespace BotMaker
                                     String argument = e.GetArg("argument").ToLower();
                                     if (!argument.Equals(""))
                                     {
-                                        XmlNodeList argresults = arg.SelectNodes("bm:arg[contains(match,'" + argument + "')]", nsmgr);
+                                        XmlNodeList argresults = arg.SelectNodes("arg[contains(match,'" + argument + "')]");
                                         if (argresults.Count >= 1)
                                         {
                                             int b = rnd.Next(0, argresults.Count);
                                             XmlNode argbasenode = argresults.Item(b);
-                                            XmlNode argfname = argbasenode.SelectSingleNode("bm:audio/text()", nsmgr);
+                                            XmlNode argfname = argbasenode.SelectSingleNode("audio/text()");
                                             fname = BASEDIR + argfname.Value + ".mp3";
                                         }
                                     }
@@ -149,18 +137,15 @@ namespace BotMaker
                         });
                     }
 
-                    reader.Close();
-
                     _client.ExecuteAndWait(async () =>
                     {
                         await _client.Connect(config.ReadSetting("bottoken"), TokenType.Bot);
                         _client.SetGame(new Game(config.ReadSetting("game")));
                     });
                 }
-                catch (Exception e)
+                catch
                 {
                     Console.WriteLine("Something's not right. Make sure you have a proper commands.xml file in the same directory as BotMaker");
-                    Console.WriteLine(e.ToString());
                 }
             }
         }
@@ -228,20 +213,6 @@ namespace BotMaker
             Console.Write("Leaving server  " + s.Name + "\n");
             queue.Remove(s);
             await audService.Leave(s);
-        }
-
-        static void validateDoc(object sender, ValidationEventArgs e)
-        {
-            switch (e.Severity)
-            {
-                case XmlSeverityType.Error:
-                    Console.WriteLine("Error: {0}", e.Message);
-                    break;
-                case XmlSeverityType.Warning:
-                    Console.WriteLine("Warning {0}", e.Message);
-                    break;
-            }
-
         }
     }
 }
