@@ -1,0 +1,30 @@
+{
+  "readme":"This is an example config file. ",
+  "prefix":"bot ",
+  "game":"\"bot help\" for help",
+  "description":"This is a bot using the example config file. In other words, it probably doesn't do much.",
+  "stopcmd":"stop",
+  "invitecmd":"invite",
+  "directory":"C:\\botaudio\\",
+  "token":"k5NzE2NDg1MTIwMjc0ODQ0Nj.DSnXwg.ttNotArealToken5p3WfDoUxhiH",
+  "commands":{
+    "cmd-with-arg":{
+      "audios":["file1.mp3","file2.mp3"],
+      "description":"This command accepts an argument.",
+      "args":{
+        "arg":{
+          "audios":["file3.mp3","file4.mp3"],
+          "description":"an argument that can be passed."
+        },
+        "arg2":{
+          "audios":["file5.mp3"],
+          "description":"this argument only plays one audio file."
+        }
+      }
+    },
+    "cmd-without-arg":{
+      "audios":["file6.mp3","file7.mp3"],
+      "description":"This command takes no arguments."
+    }
+  }
+}
