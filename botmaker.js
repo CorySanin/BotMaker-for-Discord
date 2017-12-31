@@ -83,7 +83,7 @@ client.on('message', message => {
           .setDescription(BOTDESC)
         let listedCmds = 0
         for(let cmd in commands) {
-          if(listedCmds < 25){//there can only be 25 fiels. TODO: implement better solution
+          if(listedCmds < 25-3){//there can only be 25 fiels. TODO: implement better solution
             let thisCmd = cmd
             if(typeof(commands[cmd].args) !== 'undefined'){
               thisCmd += ' `argument`\n*argument is optional*'
