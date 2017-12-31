@@ -1,49 +1,46 @@
 # BotMaker for Discord
 ### Make your own Discord audio-playing bot with ease!
-Make an audio-playing bot for Discord (like Airhorn Solutions) without messing with any source code! All you have to do is put all your audio files into a single folder, write up a commands.xml, and run the bot. There's really nothing to it.
+Make an audio-playing bot for Discord (like Airhorn Solutions) without messing with any source code! All you have to do is put all your audio files into a single folder, write up a config.json, and run the bot. There's really nothing to it.
 
-This is what your commands.xml might look like:
-```XML
-<commands>
-	<command>
-		<trigger>trigger</trigger>
-		<alias>
-			<trigger>altTrigger1</trigger>
-			<trigger>altTrigger2</trigger>
-        </alias>
-        <description>Describe the command</description>
-        <audios><!--If there is more than one, an audio file is chosen at random-->
-			<audio>audio1</audio><!--if this case is selected, audio1.mp3 in the audio folder will play-->
-			<audio>audio2</audio>
-		</audios>
-        <args><!--This part is optional-->
-        	<arg><!--audio1.mp3 will play when "!trigger numberOne" is called in Discord-->
-            	<match>numberOne</match>
-                <audio>audio1</audio>
-            </arg>
-            <arg>
-                <match>somethingElse</match>
-                <audio>newAudio</audio><!--the audio file can be exclusive to an argument-->
-            </arg>
-            <arg><!--If there is more than one, an audio file is chosen at random-->
-				<match>randomArg</match>
-				<audio>audio1</audio>
-				<audio>audio2</audio>
-				<audio>audio3</audio>
-            </arg>
-        </args>
-    </command>
-	<command>
-	   <!--put another command here-->
-	</command>
-</commands>
+This is what your config.json might look like:
+```JSON
+{
+  "prefix":"bot ",
+  "game":"\"bot help\" for help",
+  "description":"This is a bot using the example config file. In other words, it probably doesn't do much.",
+  "stopcmd":"stop",
+  "invitecmd":"invite",
+  "directory":"C:\\botaudio\\",
+  "token":"k5NzE2NDg1MTIwMjc0ODQ0Nj.DSnXwg.ttNotArealToken5p3WfDoUxhiH",
+  "commands":{
+    "cmd-with-arg":{
+      "audios":["file1.mp3","file2.mp3"],
+      "description":"This command accepts an argument.",
+      "args":{
+        "arg":{
+          "audios":["file3.mp3","file4.mp3"],
+          "description":"an argument that can be passed."
+        },
+        "arg2":{
+          "audios":["file5.mp3"],
+          "description":"this argument only plays one audio file."
+        }
+      }
+    },
+    "cmd-without-arg":{
+      "audios":["file6.mp3","file7.mp3"],
+      "description":"This command takes no arguments."
+    }
+  }
+}
 ```
 
-This is worst case scenario. Your commands.xml may look simpler.
+If you don't have a token yet, you will need to create a bot account [here](https://discordapp.com/developers/applications/me). After you've done that, you can invite
+your bot to a server by going to `https://discordapp.com/oauth2/authorize?client_id=CLIENTID&scope=bot&permissions=0`, where `CLIENTID` is your bot application's client ID (NOT THE TOKEN).
 
-Once you have your commands.xml, you can start BotMaker. When you run it for the first time, it will prompt you for some information related to your bot account. If you haven't made an account for your bot yet, do so [here](https://discordapp.com/developers/applications/me). You will have to make a bot user in order to use BotMaker. The last step is to invite the bot to your server. Go to `https://discordapp.com/oauth2/authorize?client_id=CLIENTID&scope=bot&permissions=0`, where `CLIENTID` is your bot application's client ID (NOT THE TOKEN).
+Once you have your config.json, you can start BotMaker.
 
 If you are ready to try it out, go to the [releases](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest) and grab the latest version.
 
 ## Having Issues?
-Just let me know here on [GitHub](https://github.com/CoryZ40/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
+Just let me know here on [GitHub](https://github.com/CorySanin/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
