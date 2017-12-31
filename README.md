@@ -41,7 +41,9 @@ your bot to a server by going to `https://discordapp.com/oauth2/authorize?client
 Once you have your config.json, you can start BotMaker using `npm start`
 
 When you are ready to try it out, clone this repository, do an `npm install`, write your config.json, and finally `npm start`.
-If you are feeling extra lazy, you can grab some setup scripts from the [releases page](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest). Note that these scripts require you to already have git and node ready to go. 
+If you are feeling extra lazy, you can grab some setup scripts from the [releases page](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest). Note that these scripts require you to already have git and node ready to go.
+
+make and g++ is necessary for installing BotMaker's dependencies.
 
 ## Having Issues?
 Just let me know here on [GitHub](https://github.com/CorySanin/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
