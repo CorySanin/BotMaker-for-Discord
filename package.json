@@ -1,0 +1,23 @@
+{
+  "name": "botmaker",
+  "version": "1.0.0",
+  "description": "Make your own Discord audio-playing bot with ease! ",
+  "main": "botmaker.js",
+  "scripts": {
+    "start": "node botmaker.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "maker"
+  ],
+  "author": "Cory Sanin <corysanin@outlook.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "erlpack": "github:discordapp/erlpack",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "node-opus": "^0.2.7",
+    "zlib-sync": "^0.1.4"
+  }
+}
