@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node botmaker.js"
   },
+  "repository": "https://github.com/CorySanin/BotMaker-for-Discord",
   "keywords": [
     "discord",
     "bot",
