@@ -15,6 +15,7 @@ let audioDir = 'C:\\botaudio\\'
 let commands = {}
 
 function loadConfig(){
+  //TODO: add suppoort for command aliases
   let cfgfile = 'config.json'
   if(fs.existsSync(cfgfile)){
     let cfg = JSON.parse(fs.readFileSync(cfgfile, 'utf8'))
@@ -80,12 +81,16 @@ client.on('message', message => {
         let richem = new Discord.RichEmbed()
           .setAuthor(client.user.username,client.user.avatarURL)
           .setDescription(BOTDESC)
+        let listedCmds = 0
         for(let cmd in commands) {
-          let thisCmd = cmd
-          if(typeof(commands[cmd].args) !== 'undefined'){
-            thisCmd += ' `argument`\n*argument is optional*'
+          if(listedCmds < 25){//there can only be 25 fiels. TODO: implement better solution
+            let thisCmd = cmd
+            if(typeof(commands[cmd].args) !== 'undefined'){
+              thisCmd += ' `argument`\n*argument is optional*'
+            }
+            richem.addField(cmd,commands[cmd].description+'\nUsage: '+PREFIX+thisCmd)
+            listedCmds++
           }
-          richem.addField(cmd,commands[cmd].description+'\nUsage: '+PREFIX+thisCmd)
         }
         if(interruptCmd != '' && interruptCmd !== null){
           richem.addField(interruptCmd,'Cancels the current track, if you started it (or if you\'re an admin)\nUsage: '+PREFIX+interruptCmd)
