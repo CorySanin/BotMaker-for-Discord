@@ -38,9 +38,10 @@ This is what your config.json might look like:
 If you don't have a token yet, you will need to create a bot account [here](https://discordapp.com/developers/applications/me). After you've done that, you can invite
 your bot to a server by going to `https://discordapp.com/oauth2/authorize?client_id=CLIENTID&scope=bot&permissions=0`, where `CLIENTID` is your bot application's client ID (NOT THE TOKEN).
 
-Once you have your config.json, you can start BotMaker.
+Once you have your config.json, you can start BotMaker using `npm start`
 
-If you are ready to try it out, go to the [releases](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest) and grab the latest version.
+When you are ready to try it out, clone this repository, do an `npm install`, write your config.json, and finally `npm start`.
+If you are feeling extra lazy, you can grab some setup scrips from the [releases page](https://github.com/CoryZ40/BotMaker-for-Discord/releases/latest). Note that these scripts require you to already have git and node ready to go. 
 
 ## Having Issues?
 Just let me know here on [GitHub](https://github.com/CorySanin/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
