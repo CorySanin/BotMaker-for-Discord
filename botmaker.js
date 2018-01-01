@@ -82,12 +82,17 @@ client.on('message', message => {
       }
     }
     else if(command.type === 'help'){
+
+      if(command.argument !== null && typeof(aliases[command.argument]) !== 'undefined'){
+        command.argument = aliases[command.argument]
+      }
+
       if(command.argument === null ||
           (typeof(commands[command.argument]) === 'undefined') &&
           command.argument !== interruptCmd &&
           command.argument !== inviteCmd){
         let messages = []
-        let thismessage = BOTDESC + '\nHere are the available commands:\n'
+        let thismessage = BOTDESC + '\n\nHere are the available commands:\n'
         let first = true
         for(let cmd in commands) {
           let thisCmd = '`' + cmd
