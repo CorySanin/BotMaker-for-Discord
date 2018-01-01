@@ -2,6 +2,7 @@ const Discord = require('discord.js') //https://discord.js.org/#/docs/main/stabl
 const fs = require('fs')
 const client = new Discord.Client()
 const ZEROWIDTH_SPACE = String.fromCharCode(parseInt('200B', 16))
+const MAXMESSAGELENGTH = 2000
 
 let guilds = []
 let playingNow = []
@@ -78,63 +79,110 @@ client.on('message', message => {
           (typeof(commands[command.argument]) === 'undefined') &&
           command.argument !== interruptCmd &&
           command.argument !== inviteCmd){
-        let richem = new Discord.RichEmbed()
-          .setAuthor(client.user.username,client.user.avatarURL)
-          .setDescription(BOTDESC)
-        let listedCmds = 0
+        let messages = []
+        let thismessage = client.user.username + ': ' + BOTDESC + '\n'
+        let first = true
         for(let cmd in commands) {
-          if(listedCmds < 25-3){//there can only be 25 fiels. TODO: implement better solution
-            let thisCmd = cmd
-            if(typeof(commands[cmd].args) !== 'undefined'){
-              thisCmd += ' `argument`\n*argument is optional*'
-            }
-            richem.addField(cmd,commands[cmd].description+'\nUsage: '+PREFIX+thisCmd)
-            listedCmds++
+          let thisCmd = '`' + cmd
+          if(!first){
+            thisCmd = ', ' + thisCmd
           }
-        }
-        if(interruptCmd != '' && interruptCmd !== null){
-          richem.addField(interruptCmd,'Cancels the current track, if you started it (or if you\'re an admin)\nUsage: '+PREFIX+interruptCmd)
-        }
-        if(inviteCmd != '' && inviteCmd !== null){
-          richem.addField(inviteCmd,'Invite '+client.user.username+' to your server.\nUsage: '+PREFIX+inviteCmd)
-        }
-        richem.addField('help','Display this help menu. Passing in a command name as the optional argument displays help for that command.\nUsage: '+PREFIX+'help `argument`\n*argument is optional*')
+          if(typeof(commands[cmd].args) !== 'undefined'){
+            thisCmd += '*'
+          }
+          thisCmd += '`'
 
-        message.channel.send(richem)
-      }
-      else if(command.argument === interruptCmd || command.argument === inviteCmd
-        || command.argument === 'help'){
-        let richem = new Discord.RichEmbed()
-          .setAuthor(command.argument,client.user.avatarURL)
-        if(command.argument === interruptCmd){
-          richem.setDescription('Cancels the current track, if you started it (or if you\'re an admin)\nUsage: '+PREFIX+interruptCmd)
+          if(thismessage.length + thisCmd.length > MAXMESSAGELENGTH){
+            messages.push(thismessage)
+            thismessage = thisCmd
+          }
+          else{
+            thismessage += thisCmd
+          }
+
+          first = false
         }
-        else if(command.argument === inviteCmd){
-          richem.setDescription('Invite '+client.user.username+' to your server.\nUsage: '+PREFIX+inviteCmd)
+        let builtinCmds = {
+          "stop":false,
+          "invite":false,
+          "help":true
+        }
+        for(let cmd in builtinCmds) {
+          let thisCmd = '`' + cmd
+          if(!first){
+            thisCmd = ', ' + thisCmd
+          }
+          if(builtinCmds[cmd]){
+            thisCmd += '*'
+          }
+          thisCmd += '`'
+
+          if(thismessage.length + thisCmd.length > MAXMESSAGELENGTH){
+            messages.push(thismessage)
+            thismessage = thisCmd
+          }
+          else{
+            thismessage += thisCmd
+          }
+
+          first = false
+        }
+        let bottomMessage = 'Commands denoted with a \\* indicate that '+
+        'the command can take an argument. Do `'+PREFIX+'help <command>` '+
+        'for more info.'
+        if(thismessage.length + bottomMessage.length + '\n'.length > MAXMESSAGELENGTH){
+          messages.push(thismessage)
+          thismessage = bottomMessage
         }
         else{
-          richem.setDescription('How much help could you possibly need?\nUsage: '+PREFIX+'help `argument`\n*argument is optional*')
+          thismessage += '\n'+bottomMessage
         }
-        message.channel.send(richem)
+        messages.push(thismessage)
+
+        sendHelpMessages(messages,message.channel)
+      }
+      else if(command.argument === interruptCmd || command.argument === inviteCmd){
+          let helpMessage = command.argument+'\n'
+        if(command.argument === interruptCmd){
+          helpMessage += 'Cancels the current track, if you started it (or if you\'re an admin)\nUsage: `'+PREFIX+interruptCmd+'`'
+        }
+        else if(command.argument === inviteCmd){
+          helpMessage += 'Invite '+client.user.username+' to your server.\nUsage: `'+PREFIX+inviteCmd+'`'
+        }
+        message.channel.send(helpMessage)
       }
       else{
-        let usage = '\nUsage: '+PREFIX+command.argument
+        let usage = '\nUsage: `'+PREFIX+command.argument
         if(typeof(commands[command.argument].args) !== 'undefined'){
-          usage += ' `argument`\n*argument is optional*'
+          usage += ' <argument>`\n*argument is optional*'
         }
-        let richem = new Discord.RichEmbed()
-          .setAuthor(command.argument,client.user.avatarURL)
-          .setDescription(commands[command.argument].description+usage)
+        else{
+          usage += '`'
+        }
+        let messages = []
+        let thismessage = command.argument + '\n' + commands[command.argument].description + usage + '\n'
         if(typeof(commands[command.argument].args) !== 'undefined'){
+          let first = true
+          thismessage += '\nHere are the available arguments:\n'
           for(let arg in commands[command.argument].args) {
-            let desc = undefined
-            if(typeof(commands[command.argument].args[arg].description) !== 'undefined'){
-              desc = commands[command.argument].args[arg].description
+            let thisCmd = '`' + arg + '`'
+            if(!first){
+              thisCmd = ', ' + thisCmd
             }
-            richem.addField(arg,desc+'\nUsage: '+PREFIX+command.argument+' '+arg)
+
+            if(thismessage.length + thisCmd.length > MAXMESSAGELENGTH){
+              messages.push(thismessage)
+              thismessage = thisCmd
+            }
+            else{
+              thismessage += thisCmd
+            }
+
+            first = false
           }
         }
-        message.channel.send(richem)
+        messages.push(thismessage)
+        sendHelpMessages(messages,message.channel)
       }
     }
     else if(command.type === inviteCmd){
@@ -151,6 +199,14 @@ client.on('message', message => {
     }
   }
 })
+
+function sendHelpMessages(messages,channel){
+  if(messages.length > 0){
+    let thismessage = messages.shift()
+    channel.send(thismessage)
+    setTimeout(function(){ sendHelpMessages(messages,channel) }, 1000)
+  }
+}
 
 function playCommand(command, message){
   if(typeof(commands[command.type]) !== 'undefined'){
