@@ -14,9 +14,9 @@ let interruptCmd = 'stop'
 let inviteCmd = 'invite'
 let audioDir = 'C:\\botaudio\\'
 let commands = {}
+let aliases = {}
 
 function loadConfig(){
-  //TODO: add suppoort for command aliases
   let cfgfile = 'config.json'
   if(fs.existsSync(cfgfile)){
     let cfg = JSON.parse(fs.readFileSync(cfgfile, 'utf8'))
@@ -28,6 +28,13 @@ function loadConfig(){
     audioDir = cfg.directory
     commands = cfg.commands
     client.login(cfg.token)
+    for(let cmd in commands) {
+      if(typeof(commands[cmd].aliases) !== 'undefined'){
+        for(let i=0;i<commands[cmd].aliases.length;i++){
+          aliases[commands[cmd].aliases[i]] = cmd
+        }
+      }
+    }
   }
   else{
     console.log('Oh no!!! '+cfgfile+' could not be found!')
@@ -255,7 +262,7 @@ function validateMessage(message) {
     let allButPrefix = messageText.substring(PREFIX.length,messageText.length)
     let split = allButPrefix.split(" ")
     if(split.length > 0){
-      command.type = split[0]
+      command.type = (typeof(aliases[split[0]]) !== 'undefined')? aliases[split[0]] : split[0]
       if(split.length > 1){
         command.argument= split[1]
       }

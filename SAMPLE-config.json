@@ -10,7 +10,8 @@
   "commands":{
     "cmd-with-arg":{
       "audios":["file1.mp3","file2.mp3"],
-      "description":"This command accepts an argument.",
+      "description":"This command accepts an argument. It also has aliases.",
+      "aliases":["cmdwitharg","something-else"],
       "args":{
         "arg":{
           "audios":["file3.mp3","file4.mp3"],
