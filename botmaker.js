@@ -80,7 +80,7 @@ client.on('message', message => {
           command.argument !== interruptCmd &&
           command.argument !== inviteCmd){
         let messages = []
-        let thismessage = client.user.username + ': ' + BOTDESC + '\n'
+        let thismessage = BOTDESC + '\nHere are the available commands:\n'
         let first = true
         for(let cmd in commands) {
           let thisCmd = '`' + cmd
