@@ -60,5 +60,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# directory that music kits go in
-audio/
+# any config.json - don't want to overwrite someone's config
+config.json
