@@ -168,9 +168,39 @@ client.on('message', message => {
         }
         let messages = []
         let thismessage = command.argument + '\n' + commands[command.argument].description + usage + '\n'
+
+        if(typeof(commands[command.argument].aliases) !== 'undefined'){
+          thismessage += '\nAliases: \n'
+          let aliasArr = commands[command.argument].aliases
+          let first = true
+          for(let i=0;i<aliasArr.length;i++){
+            let thisAlias = '`' + aliasArr[i] + '`'
+            if(!first){
+              thisAlias = ', ' + thisAlias
+            }
+            if(thismessage.length + thisAlias.length > MAXMESSAGELENGTH){
+              messages.push(thismessage)
+              thismessage = thisAlias
+            }
+            else{
+              thismessage += thisAlias
+            }
+            first = false
+          }
+          if(thismessage.length < MAXMESSAGELENGTH){
+            thismessage += '\n'
+          }
+        }
         if(typeof(commands[command.argument].args) !== 'undefined'){
           let first = true
-          thismessage += '\nHere are the available arguments:\n'
+          let availArgs = 'Here are the available arguments:'
+          if(thismessage.length + availArgs.length + ('\n'.length * 2) > MAXMESSAGELENGTH){
+            messages.push(thismessage)
+            thismessage = availArgs
+          }
+          else{
+            thismessage += '\n'+availArgs+'\n'
+          }
           for(let arg in commands[command.argument].args) {
             let thisCmd = '`' + arg + '`'
             if(!first){
