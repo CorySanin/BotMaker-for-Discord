@@ -130,12 +130,12 @@ client.on('message', message => {
         let bottomMessage = 'Commands denoted with a \\* indicate that '+
         'the command can take an argument. Do `'+PREFIX+'help <command>` '+
         'for more info.'
-        if(thismessage.length + bottomMessage.length + '\n'.length > MAXMESSAGELENGTH){
+        if(thismessage.length + bottomMessage.length + ('\n'.length * 2) > MAXMESSAGELENGTH){
           messages.push(thismessage)
           thismessage = bottomMessage
         }
         else{
-          thismessage += '\n'+bottomMessage
+          thismessage += '\n\n'+bottomMessage
         }
         messages.push(thismessage)
 
