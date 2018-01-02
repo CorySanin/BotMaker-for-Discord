@@ -17,6 +17,7 @@
   "dependencies": {
     "discord.js": "^11.2.1",
     "erlpack": "github:discordapp/erlpack",
+    "node-sodium": "paixaop/node-sodium",
     "ffmpeg-binaries": "^3.2.2-3",
     "node-opus": "^0.2.7",
     "zlib-sync": "^0.1.4"
