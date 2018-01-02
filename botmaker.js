@@ -253,7 +253,9 @@ function sendHelpMessages(messages,channel){
 function playCommand(command, message){
   if(typeof(commands[command.type]) !== 'undefined'){
     let audios
-    if(command.argument !== null && typeof(commands[command.type].args[command.argument]) !== 'undefined'){
+    if(command.argument !== null &&
+      typeof(commands[command.type].args) !== 'undefined' &&
+      typeof(commands[command.type].args[command.argument]) !== 'undefined'){
       audios = commands[command.type].args[command.argument].audios
     }
     else{
