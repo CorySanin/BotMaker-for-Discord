@@ -317,7 +317,7 @@ function play(guild){
       playerObj.dispatcher = dispatcher
       playingNow[guild.id] = playerObj
 
-      dispatcher.setVolume(0.2)
+      dispatcher.setVolume(0.3)
 
       dispatcher.on('end', () => {
         if(guilds[guild.id] && guilds[guild.id].length > 0){
