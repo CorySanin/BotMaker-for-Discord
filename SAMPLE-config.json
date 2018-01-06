@@ -6,6 +6,7 @@
   "stopcmd":"stop",
   "invitecmd":"invite",
   "directory":"C:\\botaudio\\",
+  "volume":".5",
   "token":"k5NzE2NDg1MTIwMjc0ODQ0Nj.DSnXwg.ttNotArealToken5p3WfDoUxhiH",
   "commands":{
     "cmd-with-arg":{

@@ -10,6 +10,7 @@ let connected = -1
 let GAME = 'GAME'
 let BOTDESC = 'Amazing.'
 let PREFIX = '! '
+let VOLUME
 let interruptCmd = 'stop'
 let inviteCmd = 'invite'
 let audioDir = 'C:\\botaudio\\'
@@ -23,6 +24,7 @@ function loadConfig(){
     PREFIX = cfg.prefix
     GAME = cfg.game
     BOTDESC = cfg.description
+    VOLUME = (typeof(cfg.volume) !== 'undefined')? cfg.volume : 0.3
     interruptCmd = cfg.stopcmd
     inviteCmd = cfg.invitecmd
     audioDir = cfg.directory
@@ -317,7 +319,7 @@ function play(guild){
       playerObj.dispatcher = dispatcher
       playingNow[guild.id] = playerObj
 
-      dispatcher.setVolume(0.3)
+      dispatcher.setVolume(VOLUME)
 
       dispatcher.on('end', () => {
         if(guilds[guild.id] && guilds[guild.id].length > 0){
