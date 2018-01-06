@@ -16,6 +16,7 @@ let inviteCmd = 'invite'
 let audioDir = 'C:\\botaudio\\'
 let commands = {}
 let aliases = {}
+let errors = []
 
 function loadConfig(){
   let cfgfile = 'config.json'
@@ -67,6 +68,16 @@ function isMatch(obj1, obj2){
 client.on('ready', () => {
   console.log('BotMaker 2 by Cory Sanin')
   updateCurrentGame()
+})
+
+client.on('error', (err) => {
+  let errText = 'ERROR: '+err.name+' - '+err.message
+  console.log(errText)
+  errors.push(errText)
+  fs.writeFile('error.json',JSON.stringify(errors), function(err){
+    if(err)
+      console.log('error writing to error file: '+err.message)
+  })
 })
 
 client.on('message', message => {
