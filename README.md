@@ -11,6 +11,7 @@ This is what your config.json might look like:
   "stopcmd":"stop",
   "invitecmd":"invite",
   "directory":"C:\\botaudio\\",
+  "volume":0.5,
   "token":"k5NzE2NDg1MTIwMjc0ODQ0Nj.DSnXwg.ttNotArealToken5p3WfDoUxhiH",
   "commands":{
     "cmd-with-arg":{
