@@ -62,3 +62,5 @@ typings/
 
 # any config.json - don't want to overwrite someone's config
 config.json
+# error output file
+error.json
