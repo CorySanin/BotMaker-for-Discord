@@ -1,6 +1,6 @@
 {
   "name": "botmaker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Make your own Discord audio-playing bot with ease! ",
   "main": "botmaker.js",
   "scripts": {

@@ -164,7 +164,7 @@ client.on('message', message => {
         }
         messages.push(thismessage)
 
-        sendHelpMessages(messages,message.channel)
+        sendHelpMessages(messages,message.channel,message.author)
       }
       else if(command.argument === interruptCmd || command.argument === inviteCmd){
           let helpMessage = command.argument+'\n'
@@ -175,6 +175,9 @@ client.on('message', message => {
           helpMessage += 'Invite '+client.user.username+' to your server.\nUsage: `'+PREFIX+inviteCmd+'`'
         }
         message.channel.send(helpMessage)
+        .catch(reason => {
+          message.author.send(helpMessage)
+        })
       }
       else{
         let usage = '\nUsage: `'+PREFIX+command.argument
@@ -237,7 +240,7 @@ client.on('message', message => {
           }
         }
         messages.push(thismessage)
-        sendHelpMessages(messages,message.channel)
+        sendHelpMessages(messages,message.channel,message.author)
       }
     }
     else if(command.type === inviteCmd){
@@ -247,6 +250,9 @@ client.on('message', message => {
         .addField('Invite',"[Invite "+client.user.username+" to your server](https://discordapp.com/oauth2/authorize?client_id="+client.user.id+"&scope=bot)")
 
       message.channel.send(richem)
+      .catch(reason => {
+        message.author.send(richem)
+      })
     }
     else if(command.type !== null){
       updateCurrentGame()
@@ -255,11 +261,14 @@ client.on('message', message => {
   }
 })
 
-function sendHelpMessages(messages,channel){
+function sendHelpMessages(messages,channel,author){
   if(messages.length > 0){
     let thismessage = messages.shift()
     channel.send(thismessage)
-    setTimeout(function(){ sendHelpMessages(messages,channel) }, 1000)
+    .catch(reason => {
+      author.send(thismessage)
+    })
+    setTimeout(function(){ sendHelpMessages(messages,channel,author) }, 1000)
   }
 }
 
@@ -345,12 +354,30 @@ function play(guild){
 
       dispatcher.on('error', e => {
         // Catch any errors that may arise
-        console.log(e)
+        console.log('dispatcher error:'+e)
+        if(guilds[guild.id] && guilds[guild.id].length > 0){
+          play(guild)
+        }
+        else{
+          delete guilds[guild.id]
+          delete playingNow[guild.id]
+          connection.disconnect()
+        }
       })
 
       //dispatcher.end() // End the dispatcher, emits 'end' event
     })
-    .catch(console.log)
+    .catch(reason => {
+    console.log(reason)
+    if(guilds[guild.id] && guilds[guild.id].length > 0){
+      play(guild)
+    }
+    else{
+      delete guilds[guild.id]
+      delete playingNow[guild.id]
+      connection.disconnect()
+    }
+  })
 }
 
 loadConfig()
