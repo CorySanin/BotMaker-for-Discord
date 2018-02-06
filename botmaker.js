@@ -176,7 +176,9 @@ client.on('message', message => {
         }
         message.channel.send(helpMessage)
         .catch(reason => {
-          message.author.send(helpMessage)
+          message.author.send(helpMessage).catch(reason => {
+            console.log(reason)
+          })
         })
       }
       else{
@@ -251,7 +253,9 @@ client.on('message', message => {
 
       message.channel.send(richem)
       .catch(reason => {
-        message.author.send(richem)
+        message.author.send(richem).catch(reason => {
+          console.log(reason)
+        })
       })
     }
     else if(command.type !== null){
@@ -266,7 +270,9 @@ function sendHelpMessages(messages,channel,author){
     let thismessage = messages.shift()
     channel.send(thismessage)
     .catch(reason => {
-      author.send(thismessage)
+      author.send(thismessage).catch(reason => {
+        console.log(reason)
+      })
     })
     setTimeout(function(){ sendHelpMessages(messages,channel,author) }, 1000)
   }
