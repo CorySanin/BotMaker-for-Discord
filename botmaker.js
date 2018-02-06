@@ -10,6 +10,7 @@ let connected = -1
 let GAME = 'GAME'
 let BOTDESC = 'Amazing.'
 let PREFIX = '! '
+let MENTIONPREFIX = '<@'+1+'> '
 let VOLUME
 let interruptCmd = 'stop'
 let inviteCmd = 'invite'
@@ -68,6 +69,7 @@ function isMatch(obj1, obj2){
 client.on('ready', () => {
   console.log('BotMaker 2 by Cory Sanin')
   updateCurrentGame()
+  MENTIONPREFIX = '<@'+client.user.id+'> '
 })
 
 client.on('error', (err) => {
@@ -323,8 +325,12 @@ function validateMessage(message) {
     'argument': null
   }
   let thisPrefix = messageText.substring(0, PREFIX.length)
-  if(thisPrefix === PREFIX){
+  let thisMentionPrefix = messageText.substring(0, MENTIONPREFIX.length)
+  if(thisPrefix === PREFIX || thisMentionPrefix === MENTIONPREFIX){
     let allButPrefix = messageText.substring(PREFIX.length,messageText.length)
+    if(thisMentionPrefix === MENTIONPREFIX){
+      allButPrefix = messageText.substring(MENTIONPREFIX.length,messageText.length)
+    }
     let split = allButPrefix.split(" ")
     if(split.length > 0){
       command.type = (typeof(aliases[split[0]]) !== 'undefined')? aliases[split[0]] : split[0]
