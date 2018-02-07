@@ -387,7 +387,9 @@ function play(guild){
     else{
       delete guilds[guild.id]
       delete playingNow[guild.id]
-      connection.disconnect()
+      if(typeof(connection) !== 'undefined'){
+        connection.disconnect()
+      }
     }
   })
 }
