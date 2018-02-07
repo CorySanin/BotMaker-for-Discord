@@ -1,4 +1,7 @@
 # BotMaker for Discord
+
+[![node.js dependencies](https://david-dm.org/CorySanin/BotMaker-for-Discord.png)](https://david-dm.org/CorySanin/BotMaker-for-Discord)
+
 ### Make your own Discord audio-playing bot with ease!
 Make an audio-playing bot for Discord (like Airhorn Solutions) without messing with any source code! All you have to do is put all your audio files into a single folder, write up a config.json, and run the bot. There's really nothing to it.
 
