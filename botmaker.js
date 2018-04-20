@@ -46,7 +46,7 @@ function loadConfig(){
 }
 
 function updateCurrentGame(){
-  client.user.setGame(GAME)
+  client.user.setActivity(GAME)
 }
 
 function isAlreadyQd(guild, playerObj){
