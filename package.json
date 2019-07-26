@@ -10,9 +10,12 @@
   "keywords": [
     "discord",
     "bot",
-    "maker"
+    "maker",
+    "docker",
+    "sound"
   ],
   "author": "Cory Sanin <corysanin@outlook.com>",
+  "contributors": ["Charlie Laabs <charlielaabs@gmail.com"],
   "license": "GPL-3.0",
   "dependencies": {
     "discord.js": "github:discordjs/discord.js#d8516efa36f62ef8a6e33b0b35ba5f482e22d103",
@@ -20,5 +23,8 @@
     "sodium": "3.0.2",
     "node-opus": "^0.3.0",
     "zlib-sync": "^0.1.4"
+  },
+  "engines": {
+    "node": ">=10.0.0"
   }
 }
