@@ -294,11 +294,11 @@ function playCommand(command, message){
     let randomIndex = Math.floor(Math.random() * audios.length)
     let playerObj = {}
     playerObj.player = message.member
-    playerObj.channel = message.member.voiceChannel
+    playerObj.channel = message.member.voice.channel
     playerObj.type = command.type
     playerObj.file = audioDir+audios[randomIndex]
 
-    if(message.member.voiceChannel){
+    if(message.member.voice.channel){
       if(fs.existsSync(playerObj.file)){
         if(guilds[message.guild.id]){
           if(!isAlreadyQd(message.guild.id, playerObj)){
@@ -347,7 +347,7 @@ function play(guild){
   playerObj.channel.join()
     .then(connection => { // Connection is an instance of VoiceConnection
       console.log('playing '+playerObj.file+' on '+guild.name)
-      let dispatcher = connection.playFile(playerObj.file)
+      let dispatcher = connection.play(playerObj.file, {volume: VOLUME})
       playerObj.dispatcher = dispatcher
       playingNow[guild.id] = playerObj
 
