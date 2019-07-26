@@ -1,5 +1,6 @@
 const Discord = require('discord.js') //https://discord.js.org/#/docs/main/stable/general/welcome
 const fs = require('fs')
+const path = require('path')
 const client = new Discord.Client()
 const ZEROWIDTH_SPACE = String.fromCharCode(parseInt('200B', 16))
 const MAXMESSAGELENGTH = 2000
@@ -20,7 +21,12 @@ let aliases = {}
 let errors = []
 
 function loadConfig(){
-  let cfgfile = 'config.json'
+  const oldCfgFile = './config.json'
+  const cfgfile = './config/config.json'
+  if (fs.existsSync(oldCfgFile)) {
+    console.log('Copying config.json to new location in ./config')
+    fs.renameSync(oldCfgFile, cfgfile)
+  }
   if(fs.existsSync(cfgfile)){
     let cfg = JSON.parse(fs.readFileSync(cfgfile, 'utf8'))
     PREFIX = cfg.prefix
@@ -296,7 +302,7 @@ function playCommand(command, message){
     playerObj.player = message.member
     playerObj.channel = message.member.voiceChannel
     playerObj.type = command.type
-    playerObj.file = audioDir+audios[randomIndex]
+    playerObj.file = path.join(audioDir, audios[randomIndex])
 
     if(message.member.voiceChannel){
       if(fs.existsSync(playerObj.file)){

@@ -51,3 +51,8 @@ make and g++ is necessary for installing BotMaker's dependencies.
 
 ## Having Issues?
 Just let me know here on [GitHub](https://github.com/CorySanin/BotMaker-for-Discord/issues). I'll take care of it as soon as I have a chance.
+
+## Docker
+Build: `docker build . -t botmaker`
+
+Run: `docker run --rm -v config:/usr/src/botmaker/config -v sounds:/usr/src/botmaker/sounds -it botmaker`
