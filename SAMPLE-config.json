@@ -5,7 +5,7 @@
   "description":"This is a bot using the example config file. In other words, it probably doesn't do much.",
   "stopcmd":"stop",
   "invitecmd":"invite",
-  "directory":"C:\\botaudio\\",
+  "directory":"sounds",
   "volume":0.5,
   "token":"k5NzE2NDg1MTIwMjc0ODQ0Nj.DSnXwg.ttNotArealToken5p3WfDoUxhiH",
   "commands":{
