@@ -15,10 +15,12 @@
     "sound"
   ],
   "author": "Cory Sanin <corysanin@outlook.com>",
-  "contributors": ["Charlie Laabs <charlielaabs@gmail.com"],
+  "contributors": [
+    "Charlie Laabs <charlielaabs@gmail.com"
+  ],
   "license": "GPL-3.0",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js#d8516efa36f62ef8a6e33b0b35ba5f482e22d103",
+    "discord.js": "github:discordjs/discord.js#f79f0243438a89c4d8a910461800b1adff2fe6e5",
     "erlpack": "github:discordapp/erlpack",
     "sodium": "3.0.2",
     "node-opus": "^0.3.0",
