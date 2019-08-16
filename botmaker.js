@@ -254,17 +254,32 @@ client.on('message', message => {
       }
     }
     else if(command.type === inviteCmd){
-      let richem = new Discord.RichEmbed()
-        .setAuthor('Invite '+client.user.username,client.user.avatarURL)
-        .setThumbnail(client.user.avatarURL)
-        .addField('Invite',"[Invite "+client.user.username+" to your server](https://discordapp.com/oauth2/authorize?client_id="+client.user.id+"&scope=bot)")
-
-      message.channel.send(richem)
-      .catch(reason => {
-        message.author.send(richem).catch(reason => {
-          console.log(reason)
-        })
-      })
+		let richem = {
+			embed: {
+				author: {
+					name: 'Invite '+client.user.username,client.user.avatarURL
+				},
+				thumbnail: {
+					url: client.user.avatarURL()
+				},
+				fields: [
+					{
+						name: 'Invite',
+						value: "[Invite "+client.user.username+" to your server](https://discordapp.com/oauth2/authorize?client_id="+client.user.id+"&scope=bot)"
+					},
+					{
+						name: 'Source Code',
+						value: "Fork me on [GitHub](https://github.com/CorySanin/BotMaker-for-Discord)"
+					}
+				]
+			}
+		}
+		message.channel.send(richem)
+		.catch(reason => {
+		  message.author.send(richem).catch(reason => {
+			console.log(reason)
+		  })
+		})
     }
     else if(command.type !== null){
       updateCurrentGame()
