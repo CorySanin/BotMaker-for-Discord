@@ -257,7 +257,8 @@ client.on('message', message => {
 		let richem = {
 			embed: {
 				author: {
-					name: 'Invite '+client.user.username,client.user.avatarURL
+          name: 'Invite '+client.user.username,
+          iconURL: client.user.avatarURL
 				},
 				thumbnail: {
 					url: client.user.avatarURL()
