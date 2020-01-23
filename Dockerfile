@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:latest-stretch
+FROM keymetrics/pm2:12-stretch
 # FROM stretch so we have git to install erlpack. Conventiently has all our build tools as well.
 
 # Create app directory
